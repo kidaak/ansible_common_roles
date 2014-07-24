@@ -1,0 +1,6 @@
+#!/bin/sh
+
+_proxy={{ socks_proxy }}
+_proxyport={{ socks_port }}
+
+exec socat STDIO SOCKS4:$_proxy:$1:$2,socksport=$_proxyport
