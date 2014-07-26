@@ -1,0 +1,9 @@
+- name: check if apache module {{ module_name }} is enabled
+  command: a2enmod -q {{ module_name }}
+  register: mod_enabled
+  ignore_errors: True
+  changed_when: False
+
+- name: enable apache module {{ module_name }}
+  command: a2enmod {{ module_name }}
+  when: mod_enabled.rc != 0  # was not listed in apache modules
