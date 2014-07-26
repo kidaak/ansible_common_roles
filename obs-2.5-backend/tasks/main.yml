@@ -1,0 +1,24 @@
+- name: Install packages for obs backend
+  zypper: name={{ item }} state=installed
+  with_items:
+   - obs-server
+   - obs-source_service
+
+- name: Put BSConfig.pm to the host
+  template: src=BSConfig.pm.j2
+    dest=/usr/lib/obs/server/BSConfig.pm
+    mode=0644 owner=root group=root
+
+- name: Put obs-server system config to the host
+  template: src=sysconfig-obs-server.j2
+    dest=/etc/sysconfig/obs-server
+    mode=0644 owner=root group=root
+
+- name: Restart obs backend services
+  service: name={{ item }} enabled=yes state=started
+  with_items:
+   - obsrepserver
+   - obssrcserver
+   - obsscheduler
+   - obsdispatcher
+   - obspublisher
