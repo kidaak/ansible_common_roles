@@ -1,0 +1,67 @@
+#
+# This file follows the sequence in
+# /usr/share/doc/packages/obs-server/README.SETUP
+#
+- name: Install packages for obs frontend
+  zypper: name={{ item }} state=installed
+  with_items:
+   - obs-api
+   - python-mysql
+   - apache2-mod_xforward
+   - rubygem-passenger-apache2
+
+- name: Install ldap-related packages for obs frontend
+  zypper: name={{ item }} state=installed
+  with_items:
+   - openldap2-client
+  when: ldap_mode == ":on"
+
+- name: Create api production databases
+  mysql_db:
+    name={{ api_database }}
+    login_host={{ obs_database_host }}
+    login_user={{ obs_database_admin }}
+    login_password={{ root_mysql_password }}
+    state=present
+  when: root_mysql_password and obs_database_admin
+
+- name: Create dbase user with all rights for {{ api_database }}
+  mysql_user:
+    name={{ api_database_user }}
+    login_host={{ obs_database_host }}
+    login_user={{ obs_database_admin }}
+    login_password={{ root_mysql_password }}
+    host=localhost
+    password={{ api_database_password }}
+    priv={{ api_database }}.*:ALL
+    state=present
+  when: root_mysql_password and obs_database_admin
+
+- name: Configure MySQL user and pwd in webui and api database configs
+  template: src=api-config-database-yml.j2
+    dest=/srv/www/obs/api/config/database.yml
+    mode=0640 owner=root group=www
+
+# XXX_missing Populate the database...
+
+- name: Create /srv/obs/repos shared by apache
+  file: path=/srv/obs/repos state=directory owner=obsrun group=obsrun mode=0755
+
+# 3.2.2 Change /srv/www/obs/api/config/options.yml
+# XXX_missing: You should set "exception_recipients" to a valid mail address
+
+- name: Set webui and api config from templates with custom values
+  template: src=api-config-options-yml.j2
+    dest=/srv/www/obs/api/config/options.yml
+    mode=0644 owner=root group=root
+
+- name: obsapidelayed is running and enabled
+  service: name=obsapidelayed state=running enabled=yes
+
+- name: Put OBS apache config to /etc/apache2/vhosts
+  template: src=obs.conf.j2
+    dest=/etc/apache2/vhosts.d/obs.conf
+    mode=0644 owner=root group=root
+
+- name: apache is restarted
+  service: name=apache2 state=restarted enabled=yes
