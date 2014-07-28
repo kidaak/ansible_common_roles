@@ -1,0 +1,7 @@
+- name: Install apache
+  zypper: name={{ item }} state=installed
+  with_items:
+   - apache2
+
+- name: be sure apache2 is running and enabled
+  service: name=apache2 state=running enabled=yes
