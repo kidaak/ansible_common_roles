@@ -1,0 +1,2 @@
+- name: Create repository configuration for zypper
+  zypper_repository: name=obs repo='http://download.opensuse.org/repositories/OBS:/Server:/{{ obs_version }}/openSUSE_{{ ansible_distribution_version }}/' state=present
