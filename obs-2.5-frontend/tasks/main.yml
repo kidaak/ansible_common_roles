@@ -44,9 +44,6 @@
 
 # XXX_missing Populate the database...
 
-- name: Create /srv/obs/repos shared by apache
-  file: path=/srv/obs/repos state=directory owner=obsrun group=obsrun mode=0755
-
 # 3.2.2 Change /srv/www/obs/api/config/options.yml
 # XXX_missing: You should set "exception_recipients" to a valid mail address
 
