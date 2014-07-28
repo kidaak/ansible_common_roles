@@ -37,7 +37,7 @@
     state=present
   when: root_mysql_password and obs_database_admin
 
-- name: Configure MySQL user and pwd in webui and api database configs
+- name: Configure MySQL user and pwd in api database config
   template: src=api-config-database-yml.j2
     dest=/srv/www/obs/api/config/database.yml
     mode=0640 owner=root group=www
@@ -50,7 +50,7 @@
 # 3.2.2 Change /srv/www/obs/api/config/options.yml
 # XXX_missing: You should set "exception_recipients" to a valid mail address
 
-- name: Set webui and api config from templates with custom values
+- name: Set api config from template with custom values
   template: src=api-config-options-yml.j2
     dest=/srv/www/obs/api/config/options.yml
     mode=0644 owner=root group=root
