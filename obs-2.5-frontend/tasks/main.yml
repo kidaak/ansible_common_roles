@@ -55,5 +55,8 @@
 - name: obsapidelayed is running and enabled
   service: name=obsapidelayed state=running enabled=yes
 
+- name: memcached is running and enabled
+  service: name=memcached state=running enabled=yes
+
 - name: apache is restarted
   service: name=apache2 state=restarted enabled=yes
