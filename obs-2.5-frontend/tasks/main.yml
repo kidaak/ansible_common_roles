@@ -55,10 +55,5 @@
 - name: obsapidelayed is running and enabled
   service: name=obsapidelayed state=running enabled=yes
 
-- name: Put OBS apache config to /etc/apache2/vhosts
-  template: src=obs.conf.j2
-    dest=/etc/apache2/vhosts.d/obs.conf
-    mode=0644 owner=root group=root
-
 - name: apache is restarted
   service: name=apache2 state=restarted enabled=yes
