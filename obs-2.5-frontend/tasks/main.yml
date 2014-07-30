@@ -52,6 +52,10 @@
     dest=/srv/www/obs/api/config/options.yml
     mode=0644 owner=root group=root
 
+# in two tried cases, this had to be created manually or 403 was displayed
+- name: Create directory /run/passenger
+  file: path=/run/passenger state=directory owner=wwwrun group=www mode=750
+
 - name: obsapidelayed is running and enabled
   service: name=obsapidelayed state=running enabled=yes
 
