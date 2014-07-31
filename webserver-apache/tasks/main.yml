@@ -3,5 +3,17 @@
   with_items:
    - apache2
 
+- name: systemd apache2 link for opensuse 12.3
+  action: file state=link
+    path=/etc/systemd/system/multi-user.target.wants/apache2.service
+    src=/lib/systemd/system/apache2.service force=yes
+  when: ansible_distribution_version == "12.3"
+
+- name: systemd apache2 link for opensuse 13.1
+  action: file state=link
+    path=/etc/systemd/system/multi-user.target.wants/apache2.service
+    src=/usr/lib/systemd/system/apache2.service force=yes
+  when: ansible_distribution_version == "13.1"
+
 - name: be sure apache2 is running and enabled
   service: name=apache2 state=running enabled=yes
