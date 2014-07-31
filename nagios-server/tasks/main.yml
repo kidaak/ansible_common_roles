@@ -1,0 +1,8 @@
+- name: Install packages for nagios-server
+  zypper: name={{ item }} state=installed
+  with_items:
+   - nagios
+   - nagios-www
+
+- name: Nagios is enabled and running
+  service: name=nagios state=running enabled=yes
