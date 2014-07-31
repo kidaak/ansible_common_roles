@@ -1,0 +1,30 @@
+- name: Add Jenkins repository
+  zypper_repository:
+      name=jenkins
+      repo='{{ jenkins_repo_server }}/{{ jenkins_repo_path }}'
+
+- name: Install packages for jenkins-server
+  zypper: name={{ item }} state=installed
+  with_items:
+   - java-1_7_0-openjdk
+   - jenkins
+
+- name: Create Jenkins user
+  user: name=jenkins shell=/bin/bash comment='Jenkins Continuous Build server' home={{ jenkins_home }}
+
+- name: Create Jenkins config
+  template: src=etc-sysconfig-jenkins.j2
+    dest=/etc/sysconfig/jenkins
+    mode=0644 owner=root group=root
+
+- name: Copy jenkins ldap cert to host
+  copy: src=certs/{{ jenkins_ldap_cert_alias }} dest={{ jenkins_ldap_cert_file_location }}/{{ jenkins_ldap_cert_alias }}
+  when: jenkins_ldap_cert_alias is defined
+
+- name: Import Jenkins ldap certificate
+  ignore_errors: yes
+  command: keytool -no-prompt -importcert -file {{ jenkins_ldap_cert_file_location }}/{{ jenkins_ldap_cert_alias }} -alias '{{ jenkins_ldap_cert_alias }}' -keystore /usr/lib64/jvm/java-1.7.0-openjdk/jre/lib/security/cacerts -storepass {{ java_keystorepass }}
+  when: jenkins_ldap_cert_alias is defined
+
+- name: Jenkins is enabled and running
+  service: name=jenkins state=running enabled=yes
