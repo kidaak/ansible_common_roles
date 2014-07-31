@@ -1,0 +1,4 @@
+- name: Install packages for munin-server
+  zypper: name={{ item }} state=installed
+  with_items:
+   - munin
