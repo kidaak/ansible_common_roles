@@ -1,0 +1,12 @@
+- name: Add Software_configuration_management repository at download.opensuse.org
+  zypper_repository: name=Software_configuration_management repo='http://download.opensuse.org/repositories/devel:/tools:/scm/openSUSE_{{ ansible_distribution_version }}/' state=present
+
+- name: Install packages for git-server
+  zypper: name={{ item }} state=installed
+  with_items:
+   - git
+   - git-daemon
+   - gitolite
+
+- name: be sure git-daemon is running and enabled
+  service: name=git-daemon state=running enabled=yes
