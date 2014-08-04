@@ -1,0 +1,32 @@
+- name: Create LXC instance config directory for {{ utsname }}
+  file: state=directory path=/var/lib/lxc/{{ utsname }} owner=root group=root mode=755
+
+- name: Config for LXC guest {{ utsname }}
+  template: src=var-lib-lxc-utsname-config.j2
+    dest=/var/lib/lxc/{{ utsname }}/config
+    mode=0644 owner=root group=root
+
+- name: fstab for LXC guest {{ utsname }}
+  template: src=var-lib-lxc-utsname-fstab.j2
+    dest=/var/lib/lxc/{{ utsname }}/fstab
+    mode=0644 owner=root group=root
+
+- name: Create LXC guest auto-start link
+  file: state=link path=/srv/lxc/auto/{{ utsname }} src=/var/lib/lxc/{{ utsname }}/config force=yes
+
+- name: /etc/hostname in LXC guest filesystem for {{ utsname }}
+  template: src=guestfilesystem-etc-HOSTNAME.j2
+    dest=/srv/lxc/{{ utsname }}-rootfs/etc/HOSTNAME
+    mode=0644 owner=root group=root
+
+- name: LXC guest address in LXC guest filesystem for {{ utsname }}
+  template: src=guestfilesystem-etc-sysconfig-network-ifcfg.j2
+    dest=/srv/lxc/{{ utsname }}-rootfs/etc/sysconfig/network/ifcfg-{{ net_name }}
+    mode=0644 owner=root group=root
+
+- name: localhost line in /etc/hosts in LXC guest filesystem for {{ utsname }}
+  lineinfile:
+    state: present
+    dest: /srv/lxc/{{ utsname }}-rootfs/etc/hosts
+    line: '127.0.0.1 localhost {{ utsname }}'
+
