@@ -1,0 +1,15 @@
+- name: Install packages for kvm-host
+  zypper: name={{ item }} state=installed
+  with_items:
+    - kvm
+    - libvirt
+
+- name: systemd libvirtd link
+  action: file state=link path=/etc/systemd/system/multi-user.target.wants/libvirtd.service
+    src=/usr/lib/systemd/system/libvirtd.service force=yes
+
+- name: start ksmd at boot
+  lineinfile:
+    state: present
+    dest: /etc/init.d/boot.local
+    line: 'echo 1 > /sys/kernel/mm/ksm/run'
