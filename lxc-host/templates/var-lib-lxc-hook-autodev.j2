@@ -1,0 +1,11 @@
+#!/bin/sh
+# LXC Autodev hook.
+cd ${LXC_ROOTFS_MOUNT}/dev
+# /dev/kvm is 10,232
+mknod -m 660 kvm c 10 232
+chown root.kvm kvm
+
+# /dev/loopN are 7,N
+for i in $(seq 0 63); do
+  mknod -m 660 loop$i b 7 $i
+done

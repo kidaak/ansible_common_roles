@@ -1,0 +1,12 @@
+- name: Install packages for lxc-host
+  zypper: name={{ item }} state=installed
+  with_items:
+    - rclxc
+
+- name: Create directory /srv/lxc/auto
+  file: path=/srv/lxc/auto state=directory owner=root group=root mode=755
+
+- name: autodev hook for devices setup in LXC guest
+  template: src=var-lib-lxc-hook-autodev.j2
+    dest=/var/lib/lxc/hook-autodev
+    mode=0755 owner=root group=root
