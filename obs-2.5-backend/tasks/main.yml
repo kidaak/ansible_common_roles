@@ -14,6 +14,11 @@
     dest=/etc/sysconfig/obs-server
     mode=0644 owner=root group=root
 
+- name: Put obs-server logrotate rules file to the host
+  template: src=etc-logrotate-obs-server.j2
+    dest=/etc/logrotate.d/obs-server
+    mode=0644 owner=root group=root
+
 - name: Restart obs backend services
   service: name={{ item }} enabled=yes state=started
   with_items:

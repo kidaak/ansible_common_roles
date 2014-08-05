@@ -1,0 +1,8 @@
+/srv/obs/log/*.log {
+    compress
+    dateext
+    rotate {{ logrotate_obs_server_keep_days }}
+    daily
+    missingok
+    copytruncate
+}
