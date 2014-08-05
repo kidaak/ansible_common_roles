@@ -34,6 +34,9 @@ my $frontend = undef; # FQDN of the WebUI/API server if it's not $hostname
 # If defined, restrict access to the backend servers (bs_repserver, bs_srcserver, bs_service)
 our $ipaccess = {
    '127\..*' => 'rw', # only the localhost can write to the backend
+{% if additional_ipaccess_addr is defined %}
+   '{{ additional_ipaccess_addr }}' => '{{ additional_ipaccess_perm }}',
+{% endif %}
    "^$ip" => 'rw',    # Permit IP of FQDN
    '.*' => 'worker',  # build results can be delivered from any client in the network
 };
