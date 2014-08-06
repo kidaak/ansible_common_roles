@@ -10,7 +10,7 @@
    - jenkins
 
 - name: Create Jenkins user
-  user: name=jenkins shell=/bin/bash comment='Jenkins Continuous Build server' home={{ jenkins_home }}
+  user: name=jenkins shell=/bin/false comment='Jenkins Continuous Build server' home={{ jenkins_home }}
 
 - name: Create Jenkins config
   template: src=etc-sysconfig-jenkins.j2
