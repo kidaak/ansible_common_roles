@@ -1,0 +1,7 @@
+- name: Install packages for webserver-lighttpd
+  zypper: name={{ item }} state=installed
+  with_items:
+   - lighttpd
+
+- name: be sure lighttpd is running and enabled
+  service: name=lighttpd state=running enabled=yes

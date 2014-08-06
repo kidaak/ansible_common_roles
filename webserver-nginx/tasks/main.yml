@@ -1,0 +1,8 @@
+- name: Install packages for webserver-nginx
+  zypper: name={{ item }} state=installed
+  with_items:
+   - nginx
+
+- name: systemd nginx link
+  action: file state=link path=/etc/systemd/system/multi-user.target.wants/nginx.service
+    src=/usr/lib/systemd/system/nginx.service force=yes
