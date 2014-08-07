@@ -1,0 +1,10 @@
+- name: Install packages for OBS workers
+  zypper: name={{ item }} state=installed
+  with_items:
+   - obs-worker
+   - kvm
+   - psmisc
+
+- name: obs worker config
+  template: src={{ ansible_distribution_version }}-etc-sysconfig-obs-server.j2
+    dest=/etc/sysconfig/obs-server owner=root group=root mode=0644

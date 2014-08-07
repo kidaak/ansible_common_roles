@@ -1,0 +1,6 @@
+- name: Install java for Jenkins worker
+  zypper: name=java-1_7_0-openjdk state=installed
+
+- name: create jenkins user
+  # note: jenkins typically belongs to group kvm but this belongs to some other role, not pure jenkins
+  user: name={{ name_Jenkins_Slave }} uid={{ uid_Jenkins_Slave }} home=/var/lib/jenkins shell=/bin/bash comment='{{ comment_Jenkins_Slave }}'
