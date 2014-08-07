@@ -6,5 +6,5 @@
    - psmisc
 
 - name: obs worker config
-  template: src={{ ansible_distribution_version }}-etc-sysconfig-obs-server.j2
+  template: src=etc-sysconfig-obs-server.j2
     dest=/etc/sysconfig/obs-server owner=root group=root mode=0644
