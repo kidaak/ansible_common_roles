@@ -1,0 +1,13 @@
+- name: ntp installed
+  zypper: name={{ item }} state=installed
+  with_items:
+    - ntp
+
+- name: NTP server config
+  lineinfile:
+    state: present
+    dest: /etc/ntp.conf
+    line: 'server {{ ntp }} iburst'
+
+- name: be sure ntpd is running and enabled
+  service: name=ntp state=running enabled=yes

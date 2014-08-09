@@ -1,0 +1,6 @@
+- name: Install useful utils for mgmt
+  zypper: name={{ item }} state=installed
+  with_items:
+    - htop
+    - mc
+    - psmisc

@@ -1,0 +1,15 @@
+- name: turn journald store off
+  lineinfile:
+    state: present
+    dest: /etc/systemd/journald.conf
+    line: 'Storage=none'
+
+- name: systemd does not start services unneeded in worker
+  action: file state=absent path={{ item }}
+  with_items:
+    - /etc/systemd/system/multi-user.target.wants/cron.service
+    - /etc/systemd/system/multi-user.target.wants/klogd.service
+    - /etc/systemd/system/multi-user.target.wants/purge-kernels.service
+    - /etc/systemd/system/getty.target.wants/getty@tty2.service
+    - /etc/systemd/system/getty.target.wants/getty@tty3.service
+    - /etc/systemd/system/getty.target.wants/getty@tty4.service
