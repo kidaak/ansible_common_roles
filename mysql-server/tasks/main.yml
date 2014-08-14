@@ -1,0 +1,15 @@
+- name: Install packages for obs frontend
+  zypper: name={{ item }} state=installed
+  with_items:
+   - python-mysql
+   - mysql-community-server
+   - mysql-community-server-client
+
+- name: my.cnf file for mysql DB access for root
+  template: src=my.cnf.j2
+    dest=/root/.my.cnf
+    mode=0600 owner=root group=root
+
+- name: mysql is running and enabled
+  service: name=mysql state=running enabled=yes
+
