@@ -1,0 +1,8 @@
+- name: systemd xinetd link
+  action: file state=link path=/etc/systemd/system/multi-user.target.wants/xinetd.service
+    src=/usr/lib/systemd/system/xinetd.service force=yes
+
+- name: xinetd config
+  template: src=etc-xinetd-conf.j2
+    dest=/etc/xinetd.conf
+    mode=0644 owner=root group=root
