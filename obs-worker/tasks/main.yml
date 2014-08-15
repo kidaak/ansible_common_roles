@@ -8,3 +8,6 @@
 - name: obs worker config
   template: src=etc-sysconfig-obs-server.j2
     dest=/etc/sysconfig/obs-server owner=root group=root mode=0644
+
+- name: make sure obsworker is running and enabled
+  service: name=obsworker state=running enabled=yes
