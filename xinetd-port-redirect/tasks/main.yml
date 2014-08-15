@@ -1,0 +1,4 @@
+- name: Config for xinetd port redirect {{ name }}
+  template: src=port-redirect.j2
+    dest=/etc/xinetd.d/{{ name }}
+    mode=0644 owner=root group=root

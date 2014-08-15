@@ -1,0 +1,32 @@
+# {{ ansible_managed }}
+service {{ name }}
+{
+    type            = UNLISTED
+    socket_type     = {{ socket_type }}
+    protocol        = {{ protocol }}
+    wait            = no
+    user            = nobody
+{% if server is defined %}
+    server          = {{ server }}
+{% endif %}
+{% if server_args is defined %}
+    server_args     = {{ server_args }}
+{% endif %}
+    bind            = {{ bind }}
+    port            = {{ port }}
+{% if only_from is defined %}
+    only_from       = {{ only_from }}
+{% endif %}
+{% if redirect is defined %}
+    redirect        = {{ redirect }}
+{% endif %}
+{% if instances is defined %}
+    instances       = {{ instances }}
+{% endif %}
+{% if per_source is defined %}
+    per_source      = {{ per_source }}
+{% endif %}
+{% if cps is defined %}
+    cps             = {{ cps }}
+{% endif %}
+}
