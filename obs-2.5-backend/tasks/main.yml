@@ -4,6 +4,13 @@
    - obs-server
    - obs-source_service
 
+- name: Install virtualization initializer pkgs if cross-build-system
+  zypper: name={{ item }} state=installed
+  with_items:
+   - build-initvm-i586
+   - build-initvm-x86_64
+  when: cross_architecture_build is defined and cross_architecture_build == ":yes"
+
 - name: Put BSConfig.pm to the host
   template: src=BSConfig.pm.j2
     dest=/usr/lib/obs/server/BSConfig.pm
