@@ -53,8 +53,8 @@ our $reposerver = "http://$hostname:5252";
 our $serviceserver = "http://$hostname:5152";
 
 # you can use different ports for worker connections
-#our $workersrcserver = "http://$hostname:5353";
-#our $workerreposerver = "http://$hostname:5253";
+our $workersrcserver = "{{ ansible_workersrcserver }}";
+our $workerreposerver = "{{ ansible_workerreposerver }}";
 
 our $servicedir = "/usr/lib/obs/service/";
 #our $servicetempdir = "/var/temp/";
@@ -77,7 +77,7 @@ our $repodownload = "{{ download_url }}";
 
 # For the workers only, it is possible to define multiple repository servers here.
 # But only one source server is possible yet.
-our @reposervers = ("http://$hostname:5252");
+our @reposervers = ("{{ reposervers }}");
 
 # Package defaults
 our $bsdir = '/srv/obs';
@@ -146,6 +146,9 @@ our $relsync_pool = {
  "sparcv9" => "sparcv9",
  "sparc64" => "sparcv9",
 };
+
+our $forceprojectkeys = {{ ansible_forceprojectkeys }};
+our $enforce_project_keys = "{{ ansible_enforce_project_keys }}";
 
 #No extra stage server sync
 #our $stageserver = 'rsync://127.0.0.1/put-repos-main';
