@@ -52,6 +52,11 @@
     dest=/srv/www/obs/api/config/options.yml
     mode=0644 owner=root group=root
 
+- name: Set api environment.rb from template with custom values
+  template: src=api-config-environment-rb.j2
+    dest=/srv/www/obs/api/config/environment.rb
+    mode=0644 owner=root group=root
+
 # in two tried cases, this had to be created manually or 403 was displayed
 - name: Create directory /run/passenger
   file: path=/run/passenger state=directory owner=wwwrun group=www mode=750
