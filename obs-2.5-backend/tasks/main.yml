@@ -21,6 +21,9 @@
     dest=/etc/sysconfig/obs-server
     mode=0644 owner=root group=root
 
+- name: Create /srv/tmp for source service
+  file: path=/srv/tmp state=directory owner=obsrun group=obsrun mode=755
+
 - name: Put obs-server logrotate rules file to the host
   template: src=etc-logrotate-obs-server.j2
     dest=/etc/logrotate.d/obs-server
