@@ -1,0 +1,26 @@
+- name: Install packages for dnsmasq server
+  zypper: name={{ item }} state=installed
+  with_items:
+   - dnsmasq
+
+- name: Create dnsmasq config file
+  template: src=etc-dnsmasq-conf.j2
+    dest=/etc/dnsmasq.conf
+    mode=0644 owner=root group=root
+
+- name: Create /etc/resolv.conf
+  template: src=etc-resolv-conf.j2
+    dest=/etc/resolv.conf
+    mode=0644 owner=root group=root
+
+- name: Create {{ resolv_file }}
+  template: src=etc-resolv-conf-dnsmasq.j2
+    dest={{ resolv_file }}
+    mode=0644 owner=root group=root
+
+- name: systemd dnsmasq link
+  action: file state=link path=/etc/systemd/system/multi-user.target.wants/dnsmasq.service
+    src=/usr/lib/systemd/system/dnsmasq.service force=yes
+
+- name: make sure dnsmasq is running and enabled
+  service: name=dnsmasq state=running enabled=yes
