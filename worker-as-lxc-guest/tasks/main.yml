@@ -10,6 +10,7 @@
     - /etc/systemd/system/multi-user.target.wants/cron.service
     - /etc/systemd/system/multi-user.target.wants/klogd.service
     - /etc/systemd/system/multi-user.target.wants/purge-kernels.service
+    - /etc/systemd/system/multi-user.target.wants/rsyncd.service
     - /etc/systemd/system/getty.target.wants/getty@tty2.service
     - /etc/systemd/system/getty.target.wants/getty@tty3.service
     - /etc/systemd/system/getty.target.wants/getty@tty4.service
