@@ -1,0 +1,6 @@
+- name: Install packages for OBS source service
+  zypper: name={{ item }} state=installed
+  with_items:
+   - obs-service-download_files
+   - obs-service-recompress
+   - obs-service-source_validator
