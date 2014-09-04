@@ -1,6 +1,0 @@
----
-- name: copy repo file
-  template: src=repo.j2 dest=/etc/zypp/repos.d/"{{repo_name}}.repo" mode=0644
-
-- name: refresh repo
-  command: zypper ref
