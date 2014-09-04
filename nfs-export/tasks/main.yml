@@ -1,0 +1,5 @@
+- name: nfs export of {{ export_path }}
+  lineinfile:
+    state: present
+    dest: /etc/exports
+    line: "{{ export_path }}  {{ nfs_client }}({{ nfs_options }})"
