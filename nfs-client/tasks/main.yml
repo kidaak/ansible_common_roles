@@ -1,0 +1,5 @@
+- name: rpcbind is running and enabled
+  service: name=rpcbind state=running enabled=yes
+
+- name: nfs client service is running and enabled
+  service: name=nfs state=running enabled=yes
