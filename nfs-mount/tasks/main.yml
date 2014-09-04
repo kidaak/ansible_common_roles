@@ -1,0 +1,5 @@
+- name: nfs mount of {{ nfs_server }}:{{ export_path }}
+  lineinfile:
+    state: present
+    dest: /etc/fstab
+    line: "{{ nfs_server }}:{{ export_path }}  {{ local_path }}  nfs  {{ nfs_options }}  0 0 "
