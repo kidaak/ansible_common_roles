@@ -19,13 +19,19 @@
 #
 # Open Build Service Configuration
 #
+# {{ ansible_managed }}
 
 package BSConfig;
 
 use Net::Domain;
 use Socket;
 
+{% if ansible_obs_hostname is defined %}
+#my $hostname = Net::Domain::hostfqdn() || 'localhost';
+my $hostname = '{{ ansible_obs_hostname }}';
+{% else %}
 my $hostname = Net::Domain::hostfqdn() || 'localhost';
+{% endif %}
 # IP corresponding to hostname (only used for $ipaccess); fallback to localhost since inet_aton may fail to resolve at shutdown.
 my $ip = quotemeta inet_ntoa(inet_aton($hostname) || inet_aton("localhost"));
 
@@ -46,6 +52,9 @@ if ($frontend) {
   my $frontendip = quotemeta inet_ntoa(inet_aton($frontend) || inet_aton("localhost"));
   $ipaccess->{$frontendip} = 'rw' ; # in dotted.quad format
 }
+{% if ansible_obsname is defined %}
+our $obsname = {{ ansible_obsname }}; # unique identifier for this Build Service instance
+{% endif %}
 
 # Change also the SLP reg files in /etc/slp.reg.d/ when you touch hostname or port
 our $srcserver = "http://$hostname:5352";
@@ -53,8 +62,16 @@ our $reposerver = "http://$hostname:5252";
 our $serviceserver = "http://$hostname:5152";
 
 # you can use different ports for worker connections
+{% if ansible_workersrcserver is defined %}
 our $workersrcserver = "{{ ansible_workersrcserver }}";
+{% else %}
+#our $workersrcserver = "http://$hostname:5353";
+{% endif %}
+{% if ansible_workerreposerver is defined %}
 our $workerreposerver = "{{ ansible_workerreposerver }}";
+{% else %}
+#our $workerreposerver = "http://$hostname:5253";
+{% endif %}
 
 our $servicedir = "/usr/lib/obs/service/";
 our $servicetempdir = "/srv/tmp/";
@@ -65,8 +82,14 @@ our $servicetempdir = "/srv/tmp/";
 
 #our $gpg_standard_key = "/etc/obs-default-gpg.asc";
 # public download service:
+{% if ansible_repodownload is defined %}
+our $repodownload = "{{ ansible_repodownload }}";
+{% else %}
 #our $repodownload = "http://$hostname/repositories";
-our $repodownload = "{{ download_url }}";
+{% endif %}
+{% if ansible_download_url is defined %}
+our $download_url = "{{ ansible_download_url }}";
+{% endif %}
 # optional notification service:
 #our $hermesserver = "http://$hostname/hermes";
 #our $hermesnamespace = "OBS";
@@ -74,10 +97,39 @@ our $repodownload = "{{ download_url }}";
 # Notification Plugin, multiple plugins supported, separated by space
 #our $notification_plugin = "notify_hermes notify_rabbitmq";
 #
+{% if ansible_notification_plugin is defined %}
+our $notification_plugin = "{{ ansible_notification_plugin }}";
+{% endif %}
+{% if ansible_jenkinsserver is defined %}
+our $jenkinsserver = '{{ ansible_jenkinsserver }}';
+our $jenkinsjob = "{{ ansible_jenkinsjob }}";
+our $jenkinsnamespace = "{{ ansible_jenkinsnamespace }}";
+# Exclude and include rules for filtering events which can trigger Jenkins.
+# Regexp pattern fields (project, type etc.) must be alphabetically sorted
+# because OBS event string with all attributes gets sorted and then matched.
+
+{% if ansible_excl_patterns is defined %}
+our @excl_patterns = {{ ansible_excl_patterns }};
+{% endif %}
+{% if ansible_incl_patterns is defined %}
+our @incl_patterns = {{ ansible_incl_patterns }};
+{% endif %}
+{% endif %}
 
 # For the workers only, it is possible to define multiple repository servers here.
 # But only one source server is possible yet.
+{% if reposervers is defined %}
 our @reposervers = ("{{ reposervers }}");
+{% else %}
+our @reposervers = ("http://$hostname:5252");
+{% endif %}
+
+{% if ansible_proxy is defined %}
+our $proxy = "{{ ansible_proxy }}";
+{% endif %}
+{% if ansible_noproxy is defined %}
+our $noproxy = "{{ ansible_noproxy }}";
+{% endif %}
 
 # Package defaults
 our $bsdir = '/srv/obs';
@@ -147,8 +199,12 @@ our $relsync_pool = {
  "sparc64" => "sparcv9",
 };
 
+{% if ansible_forceprojectkeys is defined %}
 our $forceprojectkeys = {{ ansible_forceprojectkeys }};
+{% endif %}
+{% if ansible_enforce_project_keys is defined %}
 our $enforce_project_keys = "{{ ansible_enforce_project_keys }}";
+{% endif %}
 
 #No extra stage server sync
 #our $stageserver = 'rsync://127.0.0.1/put-repos-main';
