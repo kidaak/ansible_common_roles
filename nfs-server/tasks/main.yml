@@ -1,0 +1,10 @@
+- name: Install packages for nfs-server
+  zypper: name={{ item }} state=installed
+  with_items:
+   - nfs-kernel-server
+
+- name: rpcbind is running and enabled
+  service: name=rpcbind state=running enabled=yes
+
+- name: nfsserver is running and enabled
+  service: name=nfsserver state=running enabled=yes
