@@ -24,6 +24,12 @@
     dest=/srv/lxc/{{ utsname }}-rootfs/etc/sysconfig/network/ifcfg-{{ net_name }}
     mode=0644 owner=root group=root
 
+- name: LXC guest {{ utsname }} default route
+  template: src=guestfilesystem-etc-sysconfig-network-routes.j2
+    dest=/srv/lxc/{{ utsname }}-rootfs/etc/sysconfig/network/routes
+    mode=0644 owner=root group=root
+  when: default_gw is defined
+
 - name: localhost line in /etc/hosts in LXC guest filesystem for {{ utsname }}
   lineinfile:
     state: present
