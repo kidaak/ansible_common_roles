@@ -1,15 +1,17 @@
 - name: Add Jenkins repository
   zypper_repository:
-      name=jenkins
+      name=jenkins disable_gpg_check=yes
       repo='{{ jenkins_repo_server }}/{{ jenkins_repo_path }}'
 
 - name: Install packages for jenkins-server
   zypper: name={{ item }} state=installed
   with_items:
    - jenkins
-
-- name: Create Jenkins user
-  user: name=jenkins shell=/bin/false comment='Jenkins Continuous Build server' home={{ jenkins_home }}
+   - dejavu-fonts
+# dejavu-fonts is needed because a bug in jenkins. Although we
+# set property java.awt.headless=true, the font is still needed
+# when jenkins server starts. It's a work around, maybe we can
+# remove it in future version of jenkins.
 
 - name: Create Jenkins config
   template: src=etc-sysconfig-jenkins.j2

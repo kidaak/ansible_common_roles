@@ -1,0 +1,8 @@
+---
+jenkins_repo_server: http://pkg.jenkins-ci.org
+jenkins_repo_path: opensuse
+
+jenkins_home: /var/lib/jenkins
+jenkins_port: 8080
+jenkins_ajp_port: 8009
+jenkins_args: ""
