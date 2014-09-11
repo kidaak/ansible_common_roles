@@ -1,7 +1,6 @@
-- name: Install packages for obs frontend
+- name: Install packages for mysql server
   zypper: name={{ item }} state=installed
   with_items:
-   - python-mysql
    - mysql-community-server
    - mysql-community-server-client
 
