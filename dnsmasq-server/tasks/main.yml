@@ -8,12 +8,7 @@
     dest=/etc/dnsmasq.conf
     mode=0644 owner=root group=root
 
-- name: Create /etc/resolv.conf
-  template: src=etc-resolv-conf.j2
-    dest=/etc/resolv.conf
-    mode=0644 owner=root group=root
-
-- name: Create {{ resolv_file }}
+- name: Create dnsmasq resolver file
   template: src=etc-resolv-conf-dnsmasq.j2
     dest={{ resolv_file }}
     mode=0644 owner=root group=root
