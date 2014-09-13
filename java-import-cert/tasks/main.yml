@@ -1,0 +1,9 @@
+- name: copy cert {{ alias }} file to host
+  copy: src={{ local_file }} dest={{ file }}
+
+- name: Delete certificate {{ alias }} from keystore
+  ignore_errors: yes
+  command: keytool -no-prompt -delete -alias '{{ alias }}' -keystore {{ cert_keystore }} -storepass {{ java_keystorepass }}
+
+- name: Insert certificate {{ alias }} into keystore
+  command: keytool -no-prompt -importcert -file {{ file }} -alias '{{ alias }}' -keystore {{ cert_keystore }} -storepass {{ java_keystorepass }}
