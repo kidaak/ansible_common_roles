@@ -30,9 +30,7 @@
     mode=0644 owner=root group=root
   when: default_gw is defined
 
-- name: localhost line in /etc/hosts in LXC guest filesystem for {{ utsname }}
-  lineinfile:
-    state: present
-    dest: /srv/lxc/{{ utsname }}-rootfs/etc/hosts
-    line: '127.0.0.1 localhost {{ utsname }}'
-
+- name: /etc/hosts in LXC guest filesystem for {{ utsname }}
+  template: src=guestfilesystem-etc-hosts.j2
+    dest=/srv/lxc/{{ utsname }}-rootfs/etc/hosts
+    mode=0644 owner=root group=root
