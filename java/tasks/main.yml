@@ -1,0 +1,5 @@
+---
+- name: install java
+  zypper: name={{item}} state=latest disable_gpg_check=yes
+  with_items:
+  - java-{{ java_version }}-openjdk
