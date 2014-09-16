@@ -8,11 +8,7 @@
 # This setting allows to turn the proxy on and off while
 # preserving the particular proxy setup.
 #
-{% if proxy_enabled %}
-PROXY_ENABLED="yes"
-{% else %}
-PROXY_ENABLED="no"
-{% endif %}
+PROXY_ENABLED="{{ proxy_enabled }}"
 
 ## Type:	string
 ## Default:	""
@@ -49,8 +45,4 @@ GOPHER_PROXY=""
 #
 # Example: NO_PROXY="www.me.de, do.main, localhost"
 #
-{% if no_proxy %}
 NO_PROXY="{{ no_proxy }}"
-{% else %}
-NO_PROXY="localhost, 127.0.0.1"
-{% endif %}
