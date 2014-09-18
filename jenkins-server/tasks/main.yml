@@ -6,7 +6,6 @@
 - name: Install packages for jenkins-server
   zypper: name={{ item }} state=installed
   with_items:
-   - java-1_7_0-openjdk
    - jenkins
 
 - name: Create Jenkins user
