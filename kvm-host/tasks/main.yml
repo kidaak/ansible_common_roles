@@ -8,6 +8,9 @@
   action: file state=link path=/etc/systemd/system/multi-user.target.wants/libvirtd.service
     src=/usr/lib/systemd/system/libvirtd.service force=yes
 
+- name: libvirtd is running and enabled
+  service: name=libvirtd state=running enabled=yes
+
 - name: start ksmd at boot
   lineinfile:
     state: present
