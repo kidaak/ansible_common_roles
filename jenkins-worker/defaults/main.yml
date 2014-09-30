@@ -1,0 +1,3 @@
+name_Jenkins_Slave: jenkins
+uid_Jenkins_Slave: 777
+comment_Jenkins_Slave: 'Jenkins Slave'
