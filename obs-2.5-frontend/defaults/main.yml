@@ -1,0 +1,2 @@
+api_database_timeout: 15
+api_database_pool: 10000
