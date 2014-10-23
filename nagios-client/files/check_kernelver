@@ -1,0 +1,25 @@
+#!/usr/bin/perl
+#
+# Nagios style plugin for RPM-based system:
+# Check that installed kernel matches running one
+#
+$r =`uname -r`;
+chop $r;
+($r_ver, $r_build, $r_variant) = split('\-' , $r, 3);
+$kernel_pkg = "kernel-" . $r_variant ;
+$v = `rpm -qa | grep $kernel_pkg`;
+@installed_ver = split('\n', $v);
+#print "installed=[@installed_ver]\n";
+foreach $iv (@installed_ver) {
+  #print "iv=[$iv]\n";
+  (undef, undef, $i_ver, $i_build) = split('\-' , $iv, 4);
+  #print "i_ver = [$i_ver] i_build = [$i_build]\n";
+  if ($r_ver eq $i_ver) {
+    if(!index($i_build, $r_build)) {
+	print "OK: installed kernel matches running: [$r]\n";
+	exit 0;
+    }
+  }
+}
+print "CRITICAL: kernel version mismatch: runs:[$r_ver-$r_build] installed:[$i_ver-$i_build]\n";
+exit 2;

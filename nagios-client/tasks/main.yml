@@ -1,0 +1,28 @@
+- name: Install nrpe and plugins packages
+  zypper: name={{ item }} state=installed
+  with_items:
+    - nrpe
+    - monitoring-plugins-common
+    - monitoring-plugins-disk
+    - monitoring-plugins-swap
+    - monitoring-plugins-zypper
+    - monitoring-plugins-load
+    - monitoring-plugins-ntp_time
+    - monitoring-plugins-procs
+
+- name: put check_kernelver script to plugins dir
+  copy: src=check_kernelver dest={{ nagios_plugins_path }}/check_kernelver mode=0755 owner=root group=root
+
+- name: put allow setting to /etc/nrpe.d/
+  template: src=allow.j2 dest=/etc/nrpe.d/allow.cfg mode=0644 owner=root group=root
+
+- name: put nagios sudoers file to /etc/sudoers.d/
+  template: src=sudoers.j2 dest=/etc/sudoers.d/nagios mode=0440 owner=root group=root
+
+- name: Create systemd nrpe link
+  action: file state=link
+    path=/etc/systemd/system/multi-user.target.wants/nrpe.service
+    src=/usr/lib/systemd/system/nrpe.service force=yes
+
+- name: make sure nrpe is running and enabled
+  service: name=nrpe state=running enabled=yes
