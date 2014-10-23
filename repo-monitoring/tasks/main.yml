@@ -1,0 +1,5 @@
+- name: Repo for monitoring
+  zypper_repository:
+    name=monitoring
+    repo='{{ repo_monitoring_gw }}/{{ repo_monitoring_path }}/server:/monitoring/openSUSE_{{ ansible_distribution_version }}/'
+    state=present
