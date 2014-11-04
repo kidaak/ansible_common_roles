@@ -237,6 +237,12 @@ our $enforce_project_keys = "{{ ansible_enforce_project_keys }}";
 # Use old style source service handling
 # our $old_style_services = 1;
 
+{% if ansible_dispatch_adjust is defined %}
+our $dispatch_adjust = [
+  {{ ansible_dispatch_adjust }}
+];
+{% endif %}
+
 ###
 # Optional support to split the binary backend. This can be used on large servers
 # to seperate projects for better scalability.
