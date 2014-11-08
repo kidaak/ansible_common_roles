@@ -1,9 +1,4 @@
 ---
-- name: install apache module {{ module_name }}
-  zypper: name="{{item}}" state=present
-  with_items:
-  - apache2-mod_{{ module_name }}
-
 - name: check if apache module {{ module_name }} is enabled
   command: a2enmod -q {{ module_name }}
   register: mod_enabled
