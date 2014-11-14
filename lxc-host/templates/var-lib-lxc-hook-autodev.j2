@@ -9,3 +9,7 @@ chown root.kvm kvm
 for i in $(seq 0 63); do
   mknod -m 660 loop$i b 7 $i
 done
+
+# tty10 grows with console msgs as real file
+# filling tiny /dev to 100%, lets link it to console
+ln -s console tty10
