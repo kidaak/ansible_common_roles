@@ -9,5 +9,11 @@
     dest: /etc/ntp.conf
     line: 'server {{ ntp }} iburst'
 
-- name: be sure ntpd is running and enabled
+- name: be sure ntpd is running and enabled in 13.1
   service: name=ntp state=running enabled=yes
+  when: ansible_distribution_version == "13.1"
+
+- name: be sure ntpd is running and enabled in 13.2
+  service: name=ntpd state=running enabled=yes
+  when: ansible_distribution_version == "13.2"
+
