@@ -1,7 +1,16 @@
-- name: Install packages for lxc-host
+# in 13.1 we use self-made rclxc which requires lxc
+- name: Install packages for lxc-host on 13.1
   zypper: name={{ item }} state=installed
   with_items:
     - rclxc
+  when: ansible_distribution_version == "13.1"
+
+# in 13.2 rclxc is part of lxc, self-made one would conflict
+- name: Install packages for lxc-host on 13.2
+  zypper: name={{ item }} state=installed
+  with_items:
+    - lxc
+  when: ansible_distribution_version == "13.2"
 
 - name: Create directory /srv/lxc/auto
   file: path=/srv/lxc/auto state=directory owner=root group=root mode=755
