@@ -1,0 +1,8 @@
+- name: put apache logs rotation script to /root/
+  template: src=rotate-old-apache-logs.sh.j2
+        dest=/root/rotate-old-apache-logs.sh
+        mode=0744 owner=root group=root
+
+- name: Create rotate old apache logs cron job
+  cron: name=apache_log_rotate user=root state=present minute=40 hour=2
+        job='/root/rotate-old-apache-logs.sh > /dev/null 2>&1'

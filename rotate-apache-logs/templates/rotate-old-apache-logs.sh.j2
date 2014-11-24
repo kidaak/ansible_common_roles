@@ -1,0 +1,22 @@
+#!/bin/sh
+#
+# apache pushes its logs through apache own rotating script,
+# making daily files appear in $logpath
+# Apache however does not compress nor delete old files there,
+# causing /var partition to fill up.
+# logrotate is also not good for this for 2 reasons:
+# 1. apache files are all named with same pattern *.yyyy-mm-dd.log
+# (old and current) so logrotate
+# would treat the current file for rotation, which it should not.
+# 2. logrotate would treat all daily files for rotation separately,
+# creating big mess.
+#
+# All we need can be done with 2 find commands.
+# This should be run daily (or weekly if you like) from crontab
+#
+logpath={{ logpath }}
+
+# compress log files older than compress age
+find $logpath -name '*.log' -mtime +{{ compress_age }} -exec bzip2 {} \;
+# delete compressed log files older than delete age
+find $logpath -name '*.log.bz2' -mtime +{{ delete_age }} -exec rm -f {} \;
