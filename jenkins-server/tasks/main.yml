@@ -1,10 +1,13 @@
+- name: Remove package repository
+  zypper_repository: name=jenkins state=absent
+
 - name: Add Jenkins repository
   zypper_repository:
       name=jenkins disable_gpg_check=yes
       repo='{{ jenkins_repo_server }}/{{ jenkins_repo_path }}'
 
 - name: Install packages for jenkins-server
-  zypper: name={{ item }} state=installed
+  zypper: name={{ item }} state=latest
   with_items:
    - jenkins
    - dejavu-fonts
